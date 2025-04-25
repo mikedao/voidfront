@@ -1,24 +1,23 @@
-# README
+# Voidfront Realms Elite
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Overview
+Voidfront Realms Elite is a web-based science fiction strategy game inspired by classic BBS door games like Solar Realms Elite. Players manage their own solar empire, starting with a single star system and expanding across space.
 
-Things you may want to cover:
+## Technical Details
+- Ruby on Rails 7.0+
+- TailwindCSS for styling
+- RSpec for testing
+- SQLite database
 
-* Ruby version
+## Setup
+1. Clone this repository
+2. Run `bundle install` to install Ruby gems
+3. Run `yarn install` to install JavaScript dependencies
+4. Run `rails db:create db:migrate` to set up the database
+5. Run `rails server` to start the server
 
-* System dependencies
+## Testing
+Run tests with `rspec`
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## License
+This project is licensed under the GPL 3.0
