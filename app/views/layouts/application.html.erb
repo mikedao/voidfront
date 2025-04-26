@@ -13,11 +13,22 @@
 
   <body class="bg-space-black text-gray-200 min-h-screen">
     <div class="bg-gradient-to-b from-space-blue to-space-black min-h-screen">
-      <header class="px-4 py-6 border-b border-space-purple/30">
-        <div class="container mx-auto">
-          <h1 class="text-2xl font-bold text-star">Voidfront Realms Elite</h1>
-        </div>
-      </header>
+    <header class="px-4 py-6 border-b border-space-purple/30">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-star">Voidfront Realms Elite</h1>
+      
+      <div class="flex space-x-4">
+        <% if user_signed_in? %>
+          <span class="text-gray-300">Welcome, <%= current_user.username %></span>
+          <%= link_to "Dashboard", "#", class: "text-space-highlight hover:text-space-accent" %>
+          <%= link_to "Logout", "#", class: "text-space-highlight hover:text-space-accent" %>
+        <% else %>
+          <%= link_to "Login", "#", class: "text-space-highlight hover:text-space-accent" %>
+          <%= link_to "Register", "#", class: "text-space-highlight hover:text-space-accent" %>
+        <% end %>
+      </div>
+    </div>
+  </header>
 
       <main class="container mx-auto px-4 py-8">
         <%= yield %>
