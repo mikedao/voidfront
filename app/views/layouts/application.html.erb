@@ -24,13 +24,23 @@
           <%= link_to "Logout", "#", class: "text-space-highlight hover:text-space-accent" %>
         <% else %>
           <%= link_to "Login", "#", class: "text-space-highlight hover:text-space-accent" %>
-          <%= link_to "Register", "#", class: "text-space-highlight hover:text-space-accent" %>
+          <%= link_to "Register", new_user_path, class: "text-space-highlight hover:text-space-accent" %>
         <% end %>
       </div>
     </div>
   </header>
 
       <main class="container mx-auto px-4 py-8">
+        <% if flash.any? %>
+          <div class="mt-4 mb-6">
+            <% flash.each do |type, message| %>
+              <% alert_class = type == "notice" ? "bg-green-900/30 border-green-800 text-green-300" : "bg-red-900/30 border-red-800 text-red-300" %>
+              <div class="<%= alert_class %> border rounded-lg p-4">
+                <%= message %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
         <%= yield %>
       </main>
 
