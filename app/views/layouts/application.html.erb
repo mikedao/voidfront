@@ -21,9 +21,9 @@
         <% if user_signed_in? %>
           <span class="text-gray-300">Welcome, <%= current_user.username %></span>
           <%= link_to "Dashboard", "#", class: "text-space-highlight hover:text-space-accent" %>
-          <%= link_to "Logout", "#", class: "text-space-highlight hover:text-space-accent" %>
+          <%= link_to "Logout", logout_path, method: :delete, data: { turbo_method: :delete }, class: "text-space-highlight hover:text-space-accent" %>
         <% else %>
-          <%= link_to "Login", "#", class: "text-space-highlight hover:text-space-accent" %>
+          <%= link_to "Login", login_path, class: "text-space-highlight hover:text-space-accent" %>
           <%= link_to "Register", new_user_path, class: "text-space-highlight hover:text-space-accent" %>
         <% end %>
       </div>

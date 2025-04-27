@@ -61,6 +61,8 @@ end
 group :test do
   gem "shoulda-matchers", "~> 5.3"
   gem "capybara", "~> 3.39"
+  gem "simplecov", require: false
+  gem "launchy"
 end
 
 group :development do
