@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_action :require_login
   helper_method :current_user, :user_signed_in?
   
   private
@@ -19,7 +20,7 @@ class ApplicationController < ActionController::Base
       !current_user.nil?
     end
     
-    def authenticate_user!
+    def require_login
       redirect_to root_path, alert: "You must be logged in to access this page." unless user_signed_in?
     end
 end
