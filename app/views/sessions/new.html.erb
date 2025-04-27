@@ -1,0 +1,28 @@
+<div class="max-w-md mx-auto">
+  <h2 class="text-2xl font-semibold text-space-star mb-6">Log in to Your Account</h2>
+  
+  <%= form_with(url: login_path, method: :post, local: true, class: "space-y-6") do |form| %>
+    <div>
+      <%= form.label :email, class: "block text-gray-300 mb-1" %>
+      <%= form.email_field :email, class: "w-full bg-space-blue/30 border border-space-purple/50 rounded-lg p-2 text-white" %>
+    </div>
+    
+    <div>
+      <%= form.label :password, class: "block text-gray-300 mb-1" %>
+      <%= form.password_field :password, class: "w-full bg-space-blue/30 border border-space-purple/50 rounded-lg p-2 text-white" %>
+    </div>
+    
+    <div class="flex items-center">
+      <%= form.check_box :remember_me, class: "text-space-accent bg-space-blue/30 border-space-purple/50 rounded" %>
+      <%= form.label :remember_me, "Remember me", class: "ml-2 text-gray-300" %>
+    </div>
+    
+    <div>
+      <%= form.submit "Log in", class: "w-full bg-space-nebula hover:bg-space-purple text-white font-medium py-2 px-4 rounded-lg transition" %>
+    </div>
+  <% end %>
+  
+  <div class="mt-4 text-center text-gray-400">
+    Don't have an account? <%= link_to "Register", new_user_path, class: "text-space-highlight hover:text-space-accent" %>
+  </div>
+</div>
