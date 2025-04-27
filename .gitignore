@@ -37,5 +37,7 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
-# Ignore simplecov report
+
+
+# Ignore SimpleCov Coverage Report
 /coverage
