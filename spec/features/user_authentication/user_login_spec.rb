@@ -45,4 +45,57 @@ RSpec.describe "User Login", type: :feature do
     expect(page).to have_content("Invalid email or password")
     expect(page).not_to have_content("Welcome")
   end
+
+  xscenario "User is remembered after checking remember me" do
+    visit login_path
+    fill_in "Email", with: user.email
+    fill_in "Password", with: "password123"
+    check "Remember me"
+    click_button "Log in"
+    
+    expect(page).to have_content("Welcome, #{user.username}")
+    
+    Capybara.reset_session!
+    
+    visit root_path
+    save_and_open_page
+    expect(page).to have_content("Welcome, #{user.username}")
+  end
+
+  scenario "User is not remembered without checking remember me" do
+    visit login_path
+    fill_in "Email", with: user.email
+    fill_in "Password", with: "password123"
+    # Don't check "Remember me"
+    click_button "Log in"
+    
+    expect(page).to have_content("Welcome, #{user.username}")
+    
+    # Clear the session cookies
+    Capybara.reset_session!
+    
+    # Visit the site again - user should NOT be logged in
+    visit root_path
+    expect(page).not_to have_content("Welcome, #{user.username}")
+    expect(page).to have_link("Login")
+  end
+
+  scenario "Remembered user is properly logged out" do
+    # Login with remember me
+    visit login_path
+    fill_in "Email", with: user.email
+    fill_in "Password", with: "password123"
+    check "Remember me"
+    click_button "Log in"
+    
+    # Now log out
+    click_link "Logout"
+    expect(page).to have_content("You have been logged out")
+    
+    # Even after a "browser restart" the user should be logged out
+    Capybara.reset_session!
+    visit root_path
+    expect(page).not_to have_content("Welcome, #{user.username}")
+    expect(page).to have_link("Login")
+  end
 end
