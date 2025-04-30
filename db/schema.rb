@@ -10,7 +10,32 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_26_005300) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_30_200649) do
+  create_table "empires", force: :cascade do |t|
+    t.string "name"
+    t.integer "credits", default: 1000
+    t.integer "minerals", default: 500
+    t.integer "energy", default: 500
+    t.integer "food", default: 500
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_empires_on_user_id", unique: true
+  end
+
+  create_table "star_systems", force: :cascade do |t|
+    t.string "name"
+    t.string "system_type"
+    t.integer "max_population"
+    t.integer "current_population", default: 10
+    t.integer "max_buildings"
+    t.integer "loyalty", default: 100
+    t.integer "empire_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["empire_id"], name: "index_star_systems_on_empire_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
@@ -22,4 +47,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_26_005300) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "empires", "users"
+  add_foreign_key "star_systems", "empires"
 end
