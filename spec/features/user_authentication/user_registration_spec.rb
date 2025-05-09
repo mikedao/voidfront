@@ -14,7 +14,7 @@ RSpec.describe "User Registration", type: :feature do
     }.to change(User, :count).by(1)
 
     expect(page).to have_content("Registration Successful")
-    expect(current_path).to eq(root_path)
+    expect(current_path).to eq(dashboard_path)
   end
 
   scenario "User attempts to register with invalid information" do

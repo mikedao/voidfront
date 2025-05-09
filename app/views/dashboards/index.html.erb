@@ -1,23 +1,72 @@
+<!-- app/views/dashboards/index.html.erb -->
 <div class="max-w-4xl mx-auto">
-  <h1 class="text-2xl font-bold text-space-star mb-6">Your Dashboard</h1>
-  
-  <div class="bg-space-blue/30 border border-space-purple/30 rounded-lg p-6 shadow-lg">
-    <h2 class="text-xl font-semibold text-space-accent mb-4">Empire Status</h2>
-    <p class="text-gray-300 mb-4">
-      Welcome to your command center, <%= current_user.username %>. From here, you can manage your empire and chart your course through the stars.
-    </p>
+  <div class="bg-space-blue/30 border border-space-purple/30 rounded-lg p-6 shadow-lg mb-6">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-2xl font-bold text-space-star"><%= current_user.empire.name %></h1>
+      <div class="text-sm text-gray-400">Ruler: <%= current_user.username %></div>
+    </div>
     
-    <!-- Placeholder for dashboard content -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-      <div class="bg-space-blue/20 border border-space-purple/20 rounded-lg p-6">
-        <h3 class="text-lg font-medium text-space-highlight mb-2">Resources</h3>
-        <p class="text-gray-400">Resource management interface coming soon...</p>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
+      <div class="bg-space-blue/20 border border-space-purple/20 rounded-lg p-4">
+        <div class="text-sm text-gray-400">Credits</div>
+        <div class="text-xl text-space-highlight font-medium"><%= current_user.empire.credits %></div>
       </div>
       
-      <div class="bg-space-blue/20 border border-space-purple/20 rounded-lg p-6">
-        <h3 class="text-lg font-medium text-space-highlight mb-2">Fleet Status</h3>
-        <p class="text-gray-400">Fleet management interface coming soon...</p>
+      <div class="bg-space-blue/20 border border-space-purple/20 rounded-lg p-4">
+        <div class="text-sm text-gray-400">Minerals</div>
+        <div class="text-xl text-space-highlight font-medium"><%= current_user.empire.minerals %></div>
       </div>
+      
+      <div class="bg-space-blue/20 border border-space-purple/20 rounded-lg p-4">
+        <div class="text-sm text-gray-400">Energy</div>
+        <div class="text-xl text-space-highlight font-medium"><%= current_user.empire.energy %></div>
+      </div>
+      
+      <div class="bg-space-blue/20 border border-space-purple/20 rounded-lg p-4">
+        <div class="text-sm text-gray-400">Food</div>
+        <div class="text-xl text-space-highlight font-medium"><%= current_user.empire.food %></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-space-blue/30 border border-space-purple/30 rounded-lg p-6 shadow-lg">
+    <h2 class="text-xl font-semibold text-space-accent mb-4">Star Systems</h2>
+    
+    <% if current_user.empire.star_systems.any? %>
+      <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <% current_user.empire.star_systems.each do |system| %>
+          <div class="bg-space-blue/20 border border-space-purple/20 rounded-lg p-4">
+            <div class="flex justify-between items-start mb-2">
+              <h3 class="font-medium text-space-highlight"><%= system.name %></h3>
+              <span class="text-xs px-2 py-1 bg-space-purple/20 rounded-full text-space-highlight">
+                <%= system.system_type.humanize %>
+              </span>
+            </div>
+            <div class="text-sm text-gray-300">
+              <div class="flex justify-between mb-1">
+                <span>Population:</span>
+                <span><%= system.current_population %> / <%= system.max_population %></span>
+              </div>
+              <div class="flex justify-between mb-1">
+                <span>Buildings:</span>
+                <span>0 / <%= system.max_buildings %></span>
+              </div>
+              <div class="flex justify-between">
+                <span>Loyalty:</span>
+                <span><%= system.loyalty %>%</span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-400">No star systems found. This is unusual - please contact support.</p>
+    <% end %>
+    
+    <div class="mt-4">
+      <button disabled class="bg-space-purple/50 text-gray-400 cursor-not-allowed py-2 px-4 rounded-lg">
+        Explore New Systems (Coming Soon)
+      </button>
     </div>
   </div>
 </div>

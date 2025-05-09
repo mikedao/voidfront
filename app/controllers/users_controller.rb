@@ -8,10 +8,17 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     
     if @user.save
-      EmpireBuilderService.new(@user).create_empire
+      empire_name = params[:user][:empire_name].presence
+      empire = EmpireBuilderService.new(@user).create_empire(empire_name)
+
+      if empire.errors.any?
+        @user.destroy
+        @user.errors.add(:empire_name, empire.errors.messages[:name].first) if empire.errors.messages[:name].present?
+        return render :new, status: :unprocessable_entity
+      end
       
       session[:user_id] = @user.id
-      redirect_to root_path, notice: "Registration Successful"
+      redirect_to dashboard_path, notice: "Registration Successful"
     else
       render :new, status: :unprocessable_entity
     end

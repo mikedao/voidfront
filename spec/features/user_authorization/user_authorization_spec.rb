@@ -2,7 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "Authorzation", type: :feature do
   let(:user) { create(:user) }
-  
+  let!(:empire) { create(:empire, name: "Test Empire", user: user) }
+  let!(:star_system) { create(:star_system, name: "Alpha Centauri", system_type: "terrestrial", empire: empire) }
+   
   describe "Accessing protected resources" do
     context "when user is not authenticated" do
       it "redirects to login page when trying to access dashboard" do

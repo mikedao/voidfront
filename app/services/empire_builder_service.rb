@@ -3,7 +3,6 @@ class EmpireBuilderService
     @user = user
   end
 
-
   def create_empire(name = nil)
     empire_name = name || generate_empire_name
 
@@ -13,16 +12,29 @@ class EmpireBuilderService
         name: empire_name
       )
 
+      unless empire.save
+        return empire
+      end
+
       create_starting_star_system(empire)
 
       empire
     end
+  rescue => e
+    empire = Empire.new(user: @user)
+    empire.errors.add(:name, e.message)
+    empire
   end
   
   private
 
     def generate_empire_name
-      Faker::Space.galaxy
+      10.times do
+        name = "#{Faker::Adjective.positive}-#{Faker::Hipster.word}"
+        return name unless Empire.exists?(name: name)
+      end
+
+      "#{Faker::Adjective.positive}-#{Faker::Hipster.word}-#{Faker::Number.hexadecimal(digits: 4)}"
     end
 
     def create_starting_star_system(empire)
