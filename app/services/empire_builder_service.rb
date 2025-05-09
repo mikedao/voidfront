@@ -22,8 +22,7 @@ class EmpireBuilderService
     end
   rescue => e
     empire = Empire.new(user: @user)
-    binding.pry
-    empire.errors.add(:base, e.message)
+    empire.errors.add(:name, e.message)
     empire
   end
   

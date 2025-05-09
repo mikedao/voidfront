@@ -34,6 +34,11 @@
     </div>
     
     <div>
+      <%= form.label :empire_name, "Empire name (optional)", class: "block text-gray-300 mb-1" %>
+      <%= form.text_field :empire_name, class: "w-full bg-space-blue/30 border border-space-purple/50 rounded-lg p-2 text-white", placeholder: "Leave blank for random name" %>
+    </div>
+
+    <div>
       <%= form.submit "Register", class: "w-full bg-space-nebula hover:bg-space-purple text-white font-medium py-2 px-4 rounded-lg transition" %>
     </div>
   <% end %>
