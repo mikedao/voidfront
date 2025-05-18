@@ -5,19 +5,19 @@ class MaintenanceJob < ApplicationJob
     @empire = Empire.find(empire_id)
     return unless @empire
   
-    collect_taxes
-    
-    # Future maintenance tasks go here
+    maintenance_tasks 
   end
 
   private
 
-  def collect_taxes
-    total_population = @empire.star_systems.sum(:current_population)
-    tax_revenue = (total_population * @empire.tax_rate / 100).floor
-
-    if tax_revenue > 0
-      @empire.update(credits: @empire.credits + tax_revenue)
+  def maintenance_tasks
+    ActiveRecord::Base.transaction do
+      @empire.update(credits: @empire.credits + tax_revenue) if tax_revenue > 0
     end
+  end
+
+  def tax_revenue
+    total_population = @empire.star_systems.sum(:current_population)
+    (total_population * @empire.tax_rate / 100).floor
   end
 end
