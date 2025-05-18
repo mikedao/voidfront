@@ -29,6 +29,17 @@
     </div>
   </div>
 
+  <div class="mt-4 flex justify-between items-center mb-6">
+  <div class="bg-space-blue/20 border border-space-purple/20 rounded-lg p-4">
+    <div class="text-sm text-gray-400">Tax Rate</div>
+    <div class="text-xl text-space-highlight font-medium"><%= current_user.empire.tax_rate %>%</div>
+  </div>
+
+  <div>
+    <%= link_to "Manage Empire", edit_empire_path(current_user.empire), class: "bg-space-nebula hover:bg-space-purple text-white font-medium py-2 px-4 rounded-lg transition" %>
+  </div>
+  </div>
+
   <div class="bg-space-blue/30 border border-space-purple/30 rounded-lg p-6 shadow-lg">
     <h2 class="text-xl font-semibold text-space-accent mb-4">Star Systems</h2>
     

@@ -5,6 +5,7 @@ FactoryBot.define do
     minerals { 500 }
     energy { 500 }
     food { 500 }
+    tax_rate { 20 }
     association :user
   end
 end

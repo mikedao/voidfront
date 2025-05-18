@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_30_200649) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_18_141932) do
   create_table "empires", force: :cascade do |t|
     t.string "name"
     t.integer "credits", default: 1000
@@ -20,6 +20,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_30_200649) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "tax_rate", default: 20
     t.index ["user_id"], name: "index_empires_on_user_id", unique: true
   end
 
