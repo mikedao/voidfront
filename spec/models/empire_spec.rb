@@ -14,6 +14,7 @@ RSpec.describe Empire, type: :model do
   it { should validate_numericality_of(:minerals).only_integer.is_greater_than_or_equal_to(0) }
   it { should validate_numericality_of(:energy).only_integer.is_greater_than_or_equal_to(0) }
   it { should validate_numericality_of(:food).only_integer.is_greater_than_or_equal_to(0) }
+  it { should validate_numericality_of(:tax_rate).only_integer.is_greater_than_or_equal_to(0).is_less_than_or_equal_to(100) }
   
   # Factory test
   it "has a valid factory" do
@@ -30,6 +31,7 @@ RSpec.describe Empire, type: :model do
       expect(empire.minerals).to eq(500)
       expect(empire.energy).to eq(500)
       expect(empire.food).to eq(500)
+      expect(empire.tax_rate).to eq(20)
     end
   end
 
