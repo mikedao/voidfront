@@ -13,6 +13,10 @@ class MaintenanceJob < ApplicationJob
   def maintenance_tasks
     ActiveRecord::Base.transaction do
       @empire.update(credits: @empire.credits + tax_revenue) if tax_revenue > 0
+
+      @empire.star_systems.each do |system|
+        system.grow_population
+      end
     end
   end
 
