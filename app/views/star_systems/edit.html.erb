@@ -1,0 +1,26 @@
+<div class="max-w-md mx-auto">
+  <h2 class="text-2xl font-semibold text-space-star mb-6">Administer Star System</h2>
+  
+  <% if @star_system.errors.any? %>
+    <div class="bg-red-900/30 border border-red-800 rounded-lg p-4 mb-6">
+      <h3 class="text-red-400 font-medium mb-2">The following errors occurred:</h3>
+      <ul class="list-disc list-inside text-red-300">
+        <% @star_system.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <%= form_with(model: @star_system, local: true, class: "space-y-6") do |form| %>
+    <div>
+      <%= form.label :name, class: "block text-gray-300 mb-1" %>
+      <%= form.text_field :name, class: "w-full bg-space-blue/30 border border-space-purple/50 rounded-lg p-2 text-white" %>
+    </div>
+    
+    <div class="flex justify-between">
+      <%= form.submit "Update Star System", class: "bg-space-nebula hover:bg-space-purple text-white font-medium py-2 px-4 rounded-lg transition" %>
+      <%= link_to "Cancel", dashboard_path, class: "bg-transparent border border-space-purple/50 text-space-highlight hover:bg-space-blue/30 py-2 px-4 rounded-lg transition" %>
+    </div>
+  <% end %>
+</div>
