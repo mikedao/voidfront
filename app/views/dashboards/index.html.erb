@@ -67,6 +67,9 @@
                 <span><%= system.loyalty %>%</span>
               </div>
             </div>
+            <div class="mt-3 text-right">
+            <%= link_to "Administer", edit_star_system_path(system), class: "text-sm px-3 py-1 bg-space-nebula hover:bg-space-purple text-white rounded transition" %>
+            </div>
           </div>
         <% end %>
       </div>
