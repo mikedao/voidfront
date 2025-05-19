@@ -15,7 +15,7 @@ class MaintenanceJob < ApplicationJob
       @empire.update(credits: @empire.credits + tax_revenue) if tax_revenue > 0
 
       @empire.star_systems.each do |system|
-        system.grow_population
+        system.update(current_population: system.new_population)
       end
     end
   end

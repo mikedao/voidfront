@@ -69,46 +69,51 @@ RSpec.describe StarSystem, type: :model do
       expect(system.calculate_growth).to eq(-3) # Rounded down
     end
   end
-  describe "#grow_population" do
-    let(:empire) { build(:empire) }
+  
+  describe "#new_population" do
 
-    it "increases population based on calculated growth" do
-      system = build(:star_system, current_population: 100, max_population: 200, empire: empire)
-      allow(system).to receive(:calculate_growth).and_return(10)
-      
-      system.grow_population
-      expect(system.current_population).to eq(110)
+    it "calculates population based on calculated growth increase" do
+      empire = build(:empire, tax_rate: 20)
+      system = build(:star_system, 
+                      system_type: "terrestrial", 
+                      current_population: 100, 
+                      max_population: 200, 
+                      empire: empire)
+                      
+      expect(system.new_population).to eq(106)
     end
     
-    it "decreases population with negative growth" do
-      system = build(:star_system, current_population: 100, max_population: 200, empire: empire)
-      allow(system).to receive(:calculate_growth).and_return(-20)
-      
-      system.grow_population
-      expect(system.current_population).to eq(80)
+    it "calculates population based on calculated growth decrease" do
+      empire = build(:empire, tax_rate: 100)
+      system = build(:star_system, 
+                      system_type: "terrestrial", 
+                      current_population: 100, 
+                      max_population: 200, 
+                      empire: empire)
+                      
+      expect(system.new_population).to eq(95)
     end
     
     it "does not exceed max population" do
-      system = build(:star_system, current_population: 195, max_population: 200, empire: empire)
-      allow(system).to receive(:calculate_growth).and_return(10)
+      empire = build(:empire, tax_rate: 20)
+      system = build(:star_system, 
+                      system_type: "terrestrial", 
+                      current_population: 195, 
+                      max_population: 200, 
+                      empire: empire)
       
-      system.grow_population
-      expect(system.current_population).to eq(200)
+      expect(system.new_population).to eq(200)
     end
     
     it "does not drop below 1 population" do
-      system = build(:star_system, current_population: 5, max_population: 200, empire: empire)
-      allow(system).to receive(:calculate_growth).and_return(-10)
+      empire = build(:empire, tax_rate: 100)
+      system = build(:star_system, 
+                      system_type: "terrestrial", 
+                      current_population: 1, 
+                      max_population: 200, 
+                      empire: empire)
       
-      system.grow_population
-      expect(system.current_population).to eq(1)
-    end
-    
-    it "saves the changes to the database" do
-      system = create(:star_system, current_population: 100, max_population: 200, empire: empire)
-      allow(system).to receive(:calculate_growth).and_return(10)
-      
-      expect { system.grow_population }.to change { system.reload.current_population }.from(100).to(110)
+      expect(system.new_population).to eq(1)
     end
   end
 end

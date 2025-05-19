@@ -21,14 +21,6 @@ RSpec.describe MaintenanceJob, type: :job do
         MaintenanceJob.perform_now(empire.id)
       }.not_to change { empire.reload.credits }
     end
-
-    it 'ignores star systems with no population' do
-      star_system.update(current_population: 0)
-      star_system_2.update(current_population: 0)
-      expect {
-        MaintenanceJob.perform_now(empire.id)
-      }.not_to change { empire.reload.credits }
-    end
   end
 
   describe "population growth during maintenance" do

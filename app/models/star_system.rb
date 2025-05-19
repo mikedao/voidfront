@@ -38,15 +38,10 @@ class StarSystem < ApplicationRecord
     (current_population * growth_percent).to_i
   end
 
-  def grow_population
-    growth = calculate_growth
-    new_population = current_population + growth
-    
-    # Apply constraints
+  def new_population
+    new_population = current_population + calculate_growth
+
     new_population = [new_population, 1].max  # Can't go below 1
-    new_population = [new_population, max_population].min  # Can't exceed max
-    
-    # Update the population
-    update(current_population: new_population)
+    [new_population, max_population].min  # Can't exceed max
   end
 end
