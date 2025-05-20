@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_18_141932) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_20_201621) do
+  create_table "building_types", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "name", null: false
+    t.text "description", null: false
+    t.boolean "unique_per_system", default: false
+    t.integer "max_level", default: 1, null: false
+    t.json "level_data", default: {}, null: false
+    t.json "prerequisites", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "empires", force: :cascade do |t|
     t.string "name"
     t.integer "credits", default: 1000
