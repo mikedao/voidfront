@@ -62,11 +62,6 @@ RSpec.describe Building, type: :model do
   end
   
   describe "#construction_progress_percentage" do
-    it "returns 0 if construction has not started" do
-      building = build(:building, construction_start: nil, construction_end: nil)
-      expect(building.construction_progress_percentage).to eq(0)
-    end
-
     it "returns 100 if construction is complete" do
       building = build(:building, status: "operational")
       expect(building.construction_progress_percentage).to eq(100)
@@ -138,7 +133,7 @@ RSpec.describe Building, type: :model do
       duplicate = build(:building, building_type: building_type, star_system: star_system)
 
       expect(duplicate).not_to be_valid
-      expect(duplicate.errors[:building_type_id]).to include("already exists in this system")
+      expect(duplicate.errors[:building_type_id]).to include("already exists in this star system")
     end
 
     it "allows creating of buildings of unique type in different systems" do

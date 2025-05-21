@@ -6,7 +6,7 @@ class Building < ApplicationRecord
   STATUSES = %w[under_construction being_demolished operational].freeze
 
   # Validations
-  validates :level, presence: true, numericality: { greater_than: 0 }
+  validates :level, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :status, presence: true, inclusion: { in: STATUSES }
   validate :unique_per_system, if: -> { building_type&.unique_per_system? }
   
@@ -50,7 +50,7 @@ class Building < ApplicationRecord
   def current_effect(effect_key)
     return nil if under_construction? || being_demolished?
 
-    building_type.effects[effect_key] * level
+    building_type.effects_for_level(level)[effect_key]
   end
 
   private
