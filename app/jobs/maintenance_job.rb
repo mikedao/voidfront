@@ -21,7 +21,9 @@ class MaintenanceJob < ApplicationJob
   end
 
   def tax_revenue
-    total_population = @empire.star_systems.sum(:current_population)
-    (total_population * @empire.tax_rate / 100).floor
+    # Calculate tax income for each star system and sum them up 
+    @empire.star_systems.sum do |system|
+      system.calculate_tax_income
+    end
   end
 end

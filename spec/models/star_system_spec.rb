@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe StarSystem, type: :model do
   # Association tests
   it { should belong_to(:empire) }
+  it { should have_many(:buildings) }
   
   # Validation tests
   it { should validate_presence_of(:name) }
@@ -114,6 +115,64 @@ RSpec.describe StarSystem, type: :model do
                       empire: empire)
       
       expect(system.new_population).to eq(1)
+    end
+  end
+
+  describe "#buildings_count" do
+    let(:system) { create(:star_system) }
+    let(:building_type) { create(:building_type, unique_per_system: false) }
+
+    it "returns the number of operational buildings" do
+      create(:building, star_system: system, status: "operational", building_type: building_type)
+      create(:building, star_system: system, status: "operational", building_type: building_type)
+      create(:building, :under_construction, star_system: system, building_type: building_type)
+
+      expect(system.buildings_count).to eq(2)
+    end
+  end
+
+  describe "tax_modifier from buildings" do
+    let(:system) { build(:star_system) }
+    let(:building_type) { create(:building_type) }
+
+    it "returns 0 when there are no buildings" do
+      expect(system.tax_modifier_from_buildings).to eq(0)
+    end
+
+    it "calculates tax modifier from operational buildings" do
+      create(:building, 
+              star_system: system, 
+              status: "operational", 
+              building_type: building_type, 
+              level: 1)
+
+      expect(system.tax_modifier_from_buildings).to eq(0.05)
+    end
+
+    it "ignores buildings under construction" do
+      create(:building, :under_construction, 
+              star_system: system,  
+              building_type: building_type, 
+              level: 1)
+
+      expect(system.tax_modifier_from_buildings).to eq(0)
+    end
+    
+    it "ignores buildings being demolished" do
+      create(:building, :being_demolished, 
+              star_system: system,  
+              building_type: building_type, 
+              level: 1)
+
+      expect(system.tax_modifier_from_buildings).to eq(0)
+    end
+    
+    it "calculates tax modifier from multiple buildings" do
+      building_type_2 = create(:building_type, key: "tax_office", level_data: { "1" => { effects: { tax_modifier: 0.03 }}})
+      create(:building, star_system: system, status: "operational", building_type: building_type, level: 1)
+      create(:building, star_system: system, status: "operational", building_type: building_type_2, level: 1)
+
+      expect(system.tax_modifier_from_buildings).to eq(0.08)
     end
   end
 end

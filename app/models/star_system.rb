@@ -1,5 +1,6 @@
 class StarSystem < ApplicationRecord
   belongs_to :empire
+  has_many :buildings, dependent: :destroy
   
   SYSTEM_TYPES = %w[terrestrial ocean desert tundra gas_giant asteroid_belt]
   
@@ -43,5 +44,25 @@ class StarSystem < ApplicationRecord
 
     new_population = [new_population, 1].max  # Can't go below 1
     [new_population, max_population].min  # Can't exceed max
+  end
+
+  def buildings_count
+    buildings.where(status: "operational").count
+  end
+
+  def tax_modifier_from_buildings
+    buildings.where(status: "operational").sum do |building|
+      building.current_effect("tax_modifier")
+    end
+  end
+  
+  def calculate_tax_income
+    base_tax = (current_population * empire.tax_rate / 100.0).floor
+
+    modifier = tax_modifier_from_buildings
+
+    additional_tax = (base_tax * modifier).floor
+
+    base_tax + additional_tax
   end
 end
