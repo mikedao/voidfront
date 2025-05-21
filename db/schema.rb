@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_20_201621) do
+ActiveRecord::Schema[7.1].define(version: 2025_05_21_011436) do
   create_table "building_types", force: :cascade do |t|
     t.string "key", null: false
     t.string "name", null: false
@@ -21,6 +21,21 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_20_201621) do
     t.json "prerequisites", default: {}, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "buildings", force: :cascade do |t|
+    t.integer "building_type_id", null: false
+    t.integer "star_system_id", null: false
+    t.integer "level", default: 1, null: false
+    t.string "status", default: "under_construction", null: false
+    t.datetime "construction_start"
+    t.datetime "construction_end"
+    t.datetime "demolition_end"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["building_type_id", "star_system_id"], name: "index_buildings_on_building_type_and_star_system"
+    t.index ["building_type_id"], name: "index_buildings_on_building_type_id"
+    t.index ["star_system_id"], name: "index_buildings_on_star_system_id"
   end
 
   create_table "empires", force: :cascade do |t|
@@ -60,6 +75,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_05_20_201621) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "buildings", "building_types"
+  add_foreign_key "buildings", "star_systems"
   add_foreign_key "empires", "users"
   add_foreign_key "star_systems", "empires"
 end
