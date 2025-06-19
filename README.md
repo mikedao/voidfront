@@ -12,6 +12,7 @@ Key features include:
 - **Population Growth**: Watch your empire grow based on your tax policies and system types
 - **Economic Strategy**: Balance taxation and population growth to maximize your empire's potential
 - **Scheduled Maintenance**: Experience daily empire maintenance cycles that update your resources
+- **Building System**: Construct, upgrade, and demolish buildings to enhance your star systems
 
 ## Technical Details
 
@@ -22,13 +23,15 @@ Key features include:
 - **Authentication**: Custom implementation using BCrypt (no Devise)
 - **Background Jobs**: Sidekiq with sidekiq-scheduler for maintenance tasks
 - **Ruby Version**: 3.2.2
+- **Procfile**: Uses Foreman/bin/dev to run Rails, Sidekiq, and TailwindCSS concurrently
 
 ## Setup Instructions
 
 ### Prerequisites
-- Ruby 3.2.2
-- Redis (for Sidekiq)
-- Node.js and Yarn (for TailwindCSS)
+- Ruby 3.4.4
+- Redis 8.0.2 (for Sidekiq)
+- Node.js 22.15.0
+- Yarn 1.22.19 (for TailwindCSS)
 
 ### Installation
 
@@ -49,7 +52,21 @@ yarn install
 bin/rails db:create db:migrate
 ```
 
-4. Start the server, worker, and CSS compiler
+4. Seed the database with building types and (optionally) a sample empire
+```bash
+bin/rails db:seed
+```
+
+   - The seed file creates core building types. To see a sample building, ensure you have a user, an empire, and a star system. You can create these via the Rails console:
+```ruby
+# In rails console
+y = User.create!(email: "test@example.com", password: "password")
+e = Empire.create!(user: y, name: "Test Empire")
+s = StarSystem.create!(empire: e, name: "Sol", system_type: "terrestrial")
+```
+   - Then re-run `bin/rails db:seed` to create a sample building in your star system.
+
+5. Start the server, worker, and CSS compiler
 ```bash
 bin/dev
 ```
@@ -68,6 +85,11 @@ Check test coverage with SimpleCov (results in coverage/ directory):
 COVERAGE=true bundle exec rspec
 ```
 
+#### Testing Notes
+- Uses [DatabaseCleaner](https://github.com/DatabaseCleaner/database_cleaner) with truncation for feature tests to ensure database state is visible across Capybara and Rails processes.
+- Feature tests for modals and JavaScript use Selenium with headless Chrome. Progressive enhancement ensures modals are accessible and testable in both JS and non-JS environments.
+- Accessibility and progressive enhancement are prioritized for all UI features, including modals.
+
 ## Game Mechanics
 
 ### Empire Management
@@ -84,6 +106,14 @@ COVERAGE=true bundle exec rspec
 - Credits: Generated through taxation
 - Minerals, Energy, Food: Base resources for building and maintenance
 
+### Building System
+- Construct, upgrade, and demolish buildings in your star systems
+- Each building type (e.g., Government Administration, Mining Facility, Power Plant, Research Laboratory) provides unique benefits
+- Buildings have construction and demolition times, costs, and effects
+- Some buildings are unique per system, others can be built multiple times
+- Building status is updated during scheduled maintenance cycles
+- Building construction and demolition use accessible, progressively enhanced modals for confirmation
+
 ## Development Approach
 
 This project follows Test-Driven Development (TDD) principles:
@@ -92,11 +122,11 @@ This project follows Test-Driven Development (TDD) principles:
 3. Refactor for improved design
 
 The application is built with a clean, modular architecture:
-- **Models**: Core domain objects (User, Empire, StarSystem)
+- **Models**: Core domain objects (User, Empire, StarSystem, Building, BuildingType)
 - **Services**: Encapsulated business logic (EmpireBuilderService)
 - **Jobs**: Background processing (MaintenanceJob, ScheduleMaintenanceJob)
 - **Controllers**: Minimal request handling with business logic in services
 
 ## Project Status
 
-Voidfront Realms Elite is currently under active development. Core gameplay systems including user authentication, empire management, and star system management are functional. Future updates will include ship building, research, exploration, and more advanced gameplay features.
+Voidfront Realms Elite is currently under active development. Core gameplay systems including user authentication, empire management, star system management, and the building system are functional. Future updates will include ship building, research, exploration, and more advanced gameplay features.

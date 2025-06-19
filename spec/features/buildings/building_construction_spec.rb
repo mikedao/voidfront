@@ -43,7 +43,7 @@ RSpec.describe "Building Construction", type: :feature do
     expect(page).to have_content("Cost: 200 Credits, 100 Minerals, 125 Energy")
   end
   
-  scenario "User can start construction of a building" do
+  scenario "User can start construction of a building", js: true do
     visit edit_star_system_path(star_system)
     
     expect(page).to have_button("Build")
@@ -66,8 +66,8 @@ RSpec.describe "Building Construction", type: :feature do
     expect(page).to have_content("100 Minerals")
     expect(page).to have_content("125 Energy")
     
-    # Click Confirm Construction button within the form under 'Available Buildings'
-    within(:xpath, "//h4[contains(text(), 'Available Buildings')]/following-sibling::div//form") do
+    # Click Confirm Construction button in the modal
+    within("#buildModal") do
       click_button "Confirm Construction"
     end
     
