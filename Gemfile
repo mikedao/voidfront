@@ -66,6 +66,7 @@ group :test do
   gem "capybara", "~> 3.39"
   gem "simplecov", require: false
   gem "launchy"
+  gem "selenium-webdriver"
 end
 
 group :development do

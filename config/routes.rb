@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :users, only: [:new, :create]
   resources :empires, only: [:edit, :update]
   resources :star_systems, only: [:edit, :update]
+  resources :buildings, only: [:create, :destroy]
 
   get '/dashboard', to: 'dashboards#index', as: :dashboard
 
