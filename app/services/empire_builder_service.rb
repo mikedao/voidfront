@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmpireBuilderService
   def initialize(user)
     @user = user
@@ -12,40 +14,38 @@ class EmpireBuilderService
         name: empire_name
       )
 
-      unless empire.save
-        return empire
-      end
+      return empire unless empire.save
 
       create_starting_star_system(empire)
 
       empire
     end
-  rescue => e
+  rescue StandardError => e
     empire = Empire.new(user: @user)
     empire.errors.add(:name, e.message)
     empire
   end
-  
+
   private
 
-    def generate_empire_name
-      10.times do
-        name = "#{Faker::Adjective.positive}-#{Faker::Hipster.word}"
-        return name unless Empire.exists?(name: name)
-      end
-
-      "#{Faker::Adjective.positive}-#{Faker::Hipster.word}-#{Faker::Number.hexadecimal(digits: 4)}"
+  def generate_empire_name
+    10.times do
+      name = "#{Faker::Adjective.positive}-#{Faker::Hipster.word}"
+      return name unless Empire.exists?(name: name)
     end
 
-    def create_starting_star_system(empire)
-      StarSystem.create!(
+    "#{Faker::Adjective.positive}-#{Faker::Hipster.word}-#{Faker::Number.hexadecimal(digits: 4)}"
+  end
+
+  def create_starting_star_system(empire)
+    StarSystem.create!(
       name: Faker::Space.star,
-      system_type: "terrestrial",
+      system_type: 'terrestrial',
       max_population: 1000,
       current_population: 500,
       max_buildings: 10,
       loyalty: 100,
       empire: empire
-      )
-    end
+    )
+  end
 end
