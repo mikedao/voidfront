@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StarSystemsController < ApplicationController
   before_action :authorize_star_system
 
@@ -8,7 +10,7 @@ class StarSystemsController < ApplicationController
   def update
     @star_system = StarSystem.find(params[:id])
     if @star_system.update(star_system_params)
-      redirect_to edit_star_system_path(@star_system), notice: "Star system updated successfully"
+      redirect_to edit_star_system_path(@star_system), notice: 'Star system updated successfully'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -22,8 +24,8 @@ class StarSystemsController < ApplicationController
 
   def authorize_star_system
     @star_system = StarSystem.find(params[:id])
-    unless @star_system.empire == current_user.empire
-      redirect_to root_path, alert: "You do not have permission to administer this star system"
-    end
+    return if @star_system.empire == current_user.empire
+
+    redirect_to root_path, alert: 'You do not have permission to administer this star system'
   end
 end

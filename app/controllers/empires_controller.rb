@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class EmpiresController < ApplicationController
   def edit
     @empire = current_user.empire
@@ -6,7 +8,7 @@ class EmpiresController < ApplicationController
   def update
     @empire = current_user.empire
     if @empire.update(empire_params)
-      redirect_to dashboard_path, notice: "Empire updated successfully"
+      redirect_to dashboard_path, notice: 'Empire updated successfully'
     else
       render :edit, status: :unprocessable_entity
     end

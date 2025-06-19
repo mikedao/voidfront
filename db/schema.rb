@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,73 +12,73 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_05_21_011436) do
-  create_table "building_types", force: :cascade do |t|
-    t.string "key", null: false
-    t.string "name", null: false
-    t.text "description", null: false
-    t.boolean "unique_per_system", default: false
-    t.integer "max_level", default: 1, null: false
-    t.json "level_data", default: {}, null: false
-    t.json "prerequisites", default: {}, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+ActiveRecord::Schema[7.1].define(version: 20_250_521_011_436) do
+  create_table 'building_types', force: :cascade do |t|
+    t.string 'key', null: false
+    t.string 'name', null: false
+    t.text 'description', null: false
+    t.boolean 'unique_per_system', default: false
+    t.integer 'max_level', default: 1, null: false
+    t.json 'level_data', default: {}, null: false
+    t.json 'prerequisites', default: {}, null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
   end
 
-  create_table "buildings", force: :cascade do |t|
-    t.integer "building_type_id", null: false
-    t.integer "star_system_id", null: false
-    t.integer "level", default: 1, null: false
-    t.string "status", default: "under_construction", null: false
-    t.datetime "construction_start"
-    t.datetime "construction_end"
-    t.datetime "demolition_end"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["building_type_id", "star_system_id"], name: "index_buildings_on_building_type_and_star_system"
-    t.index ["building_type_id"], name: "index_buildings_on_building_type_id"
-    t.index ["star_system_id"], name: "index_buildings_on_star_system_id"
+  create_table 'buildings', force: :cascade do |t|
+    t.integer 'building_type_id', null: false
+    t.integer 'star_system_id', null: false
+    t.integer 'level', default: 1, null: false
+    t.string 'status', default: 'under_construction', null: false
+    t.datetime 'construction_start'
+    t.datetime 'construction_end'
+    t.datetime 'demolition_end'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index %w[building_type_id star_system_id], name: 'index_buildings_on_building_type_and_star_system'
+    t.index ['building_type_id'], name: 'index_buildings_on_building_type_id'
+    t.index ['star_system_id'], name: 'index_buildings_on_star_system_id'
   end
 
-  create_table "empires", force: :cascade do |t|
-    t.string "name"
-    t.integer "credits", default: 1000
-    t.integer "minerals", default: 500
-    t.integer "energy", default: 500
-    t.integer "food", default: 500
-    t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "tax_rate", default: 20
-    t.index ["user_id"], name: "index_empires_on_user_id", unique: true
+  create_table 'empires', force: :cascade do |t|
+    t.string 'name'
+    t.integer 'credits', default: 1000
+    t.integer 'minerals', default: 500
+    t.integer 'energy', default: 500
+    t.integer 'food', default: 500
+    t.integer 'user_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.integer 'tax_rate', default: 20
+    t.index ['user_id'], name: 'index_empires_on_user_id', unique: true
   end
 
-  create_table "star_systems", force: :cascade do |t|
-    t.string "name"
-    t.string "system_type"
-    t.integer "max_population"
-    t.integer "current_population", default: 10
-    t.integer "max_buildings"
-    t.integer "loyalty", default: 100
-    t.integer "empire_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["empire_id"], name: "index_star_systems_on_empire_id"
+  create_table 'star_systems', force: :cascade do |t|
+    t.string 'name'
+    t.string 'system_type'
+    t.integer 'max_population'
+    t.integer 'current_population', default: 10
+    t.integer 'max_buildings'
+    t.integer 'loyalty', default: 100
+    t.integer 'empire_id', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['empire_id'], name: 'index_star_systems_on_empire_id'
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "email"
-    t.string "password_digest"
-    t.boolean "admin"
-    t.string "username"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["username"], name: "index_users_on_username", unique: true
+  create_table 'users', force: :cascade do |t|
+    t.string 'email'
+    t.string 'password_digest'
+    t.boolean 'admin'
+    t.string 'username'
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
+    t.index ['email'], name: 'index_users_on_email', unique: true
+    t.index ['username'], name: 'index_users_on_username', unique: true
   end
 
-  add_foreign_key "buildings", "building_types"
-  add_foreign_key "buildings", "star_systems"
-  add_foreign_key "empires", "users"
-  add_foreign_key "star_systems", "empires"
+  add_foreign_key 'buildings', 'building_types'
+  add_foreign_key 'buildings', 'star_systems'
+  add_foreign_key 'empires', 'users'
+  add_foreign_key 'star_systems', 'empires'
 end

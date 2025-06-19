@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class MaintenanceJob < ApplicationJob
   queue_as :default
 
   def perform(empire_id)
     @empire = Empire.find(empire_id)
     return unless @empire
-  
-    maintenance_tasks 
+
+    maintenance_tasks
   end
 
   private
@@ -16,7 +18,7 @@ class MaintenanceJob < ApplicationJob
       update_building_statuses
 
       # collect tax revenue
-      @empire.update(credits: @empire.credits + tax_revenue) if tax_revenue > 0
+      @empire.update(credits: @empire.credits + tax_revenue) if tax_revenue.positive?
 
       # update population
       @empire.star_systems.each do |system|
@@ -28,21 +30,19 @@ class MaintenanceJob < ApplicationJob
   def update_building_statuses
     @empire.star_systems.each do |system|
       # Find buildings where construction has finished
-      system.buildings.where(status: "under_construction")
-        .where("construction_end <= ?", Time.current)
-        .update_all(status: "operational")
+      system.buildings.where(status: 'under_construction')
+            .where('construction_end <= ?', Time.current)
+            .update_all(status: 'operational')
 
       # Remove buildings where demolition has finished
-      system.buildings.where(status: "being_demolished")
-        .where("demolition_end <= ?", Time.current)
-        .destroy_all
+      system.buildings.where(status: 'being_demolished')
+            .where('demolition_end <= ?', Time.current)
+            .destroy_all
     end
   end
 
   def tax_revenue
-    # Calculate tax income for each star system and sum them up 
-    @empire.star_systems.sum do |system|
-      system.calculate_tax_income
-    end
+    # Calculate tax income for each star system and sum them up
+    @empire.star_systems.sum(&:calculate_tax_income)
   end
 end

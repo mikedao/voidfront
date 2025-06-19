@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class StarSystem < ApplicationRecord
   belongs_to :empire
   has_many :buildings, dependent: :destroy
-  
-  SYSTEM_TYPES = %w[terrestrial ocean desert tundra gas_giant asteroid_belt]
-  
+
+  SYSTEM_TYPES = %w[terrestrial ocean desert tundra gas_giant asteroid_belt].freeze
+
   validates :name, presence: true
   validates :system_type, presence: true, inclusion: { in: SYSTEM_TYPES }
   validates :max_population, numericality: { only_integer: true, greater_than: 0 }
@@ -13,17 +15,17 @@ class StarSystem < ApplicationRecord
 
   def base_growth_rate
     case system_type
-    when "terrestrial"
+    when 'terrestrial'
       0.05
-    when "ocean"
+    when 'ocean'
       0.04
-    when "tundra"
+    when 'tundra'
       0.03
-    when "desert"
+    when 'desert'
       0.02
-    when "gas_giant"
+    when 'gas_giant'
       0.01
-    when "asteroid_belt"
+    when 'asteroid_belt'
       0.005
     else
       0.01 # Default fallback
@@ -42,20 +44,20 @@ class StarSystem < ApplicationRecord
   def new_population
     new_population = current_population + calculate_growth
 
-    new_population = [new_population, 1].max  # Can't go below 1
-    [new_population, max_population].min  # Can't exceed max
+    new_population = [new_population, 1].max # Can't go below 1
+    [new_population, max_population].min # Can't exceed max
   end
 
   def buildings_count
-    buildings.where(status: "operational").count
+    buildings.where(status: 'operational').count
   end
 
   def tax_modifier_from_buildings
-    buildings.where(status: "operational").sum do |building|
-      building.current_effect("tax_modifier")
+    buildings.where(status: 'operational').sum do |building|
+      building.current_effect('tax_modifier')
     end
   end
-  
+
   def calculate_tax_income
     base_tax = (current_population * empire.tax_rate / 100.0).floor
 

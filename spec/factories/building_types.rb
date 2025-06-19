@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :building_type do
-    key { "government_administration" }
-    name { "Government Administration Building" }
-    description { "A central administrative complex that improves tax collection efficiency." }
+    key { 'government_administration' }
+    name { 'Government Administration Building' }
+    description { 'A central administrative complex that improves tax collection efficiency.' }
     unique_per_system { true }
     max_level { 5 }
-    level_data {
+    level_data do
       {
-        "1" => {
+        '1' => {
           construction_time: 8.hours.to_i,
           demolition_time: 1.hour.to_i,
           cost: {
@@ -19,7 +21,7 @@ FactoryBot.define do
             tax_modifier: 0.05
           }
         },
-        "2" => {
+        '2' => {
           construction_time: 12.hours.to_i,
           demolition_time: 1.hour.to_i,
           cost: {
@@ -32,7 +34,7 @@ FactoryBot.define do
           }
         }
       }
-    } 
+    end
     prerequisites { {} }
   end
 end
